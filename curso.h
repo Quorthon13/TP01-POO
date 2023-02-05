@@ -7,9 +7,6 @@
 #include "professor.h"
 
 using namespace std;
-
-// quantidade de dias de aula por semana
-#define QUANT_DIAS 5
 // máximo de aulas por curso
 #define MAX_AULAS 2
 
@@ -19,13 +16,14 @@ class Professor;
 class Curso {
    private:
     string codigo;
+    string nome;
     Professor* prof;
     vector<Aluno*> alunos;
     int numAulas;
 
    public:
     Curso();
-    Curso(string codigo, Professor* prof, vector<Aluno*> alunos, int numAulas);
+    Curso(string codigo, string nome);
     Professor* getProfessor() const;
     void setProfessor(Professor* prof);
     string getCodigo() const;
@@ -39,6 +37,7 @@ class Curso {
     void cadastrar(vector<Professor*> professores);
     void incrementarAulas();
     static vector<Curso*> ordenarCursos(vector<Curso*> cursos);
+    string toString(bool gestor);
 };
 
 bool operator<(const Curso& a, const Curso& b);

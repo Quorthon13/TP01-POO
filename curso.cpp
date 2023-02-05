@@ -8,14 +8,14 @@
 #include "professor.h"
 
 Curso::Curso() : alunos() {
-    int numAulas = 0;
+    prof = NULL;
+    numAulas = 0;
 }
 
-Curso::Curso(string codigo, Professor* prof, vector<Aluno*> alunos, int numAulas) {
-    this->prof = prof;
+Curso::Curso(string codigo, string nome) {
+    this->nome = nome;
     this->codigo = codigo;
-    this->alunos = alunos;
-    this->numAulas = numAulas;
+    numAulas = 0;
 }
 
 Professor* Curso::getProfessor() const {
@@ -58,9 +58,12 @@ void Curso::cadastrar(vector<Professor*> professores) {
     cout << "Insira o codigo do curso: ";
     cin >> codigo;
 
+    cout << "Insira o nome do curso: ";
+    cin >> nome;
+
     while (true) {
         int i = 1;
-        for (Professor* prof : professores) {
+        for (Professor* professor : professores) {
             cout << setw(4) << i << " - " + prof->getNome() << endl;
             i++;
         }
@@ -68,6 +71,7 @@ void Curso::cadastrar(vector<Professor*> professores) {
         cout << "Selecione o numero do professor desse curso: ";
         cin >> i;
         if (i >= 1 && i <= professores.size()) {
+            prof = professores[i - 1];
             break;
         }
     }
@@ -80,7 +84,7 @@ void Curso::incrementarAulas() {
 }
 
 /*
- * retorna cópia do vetor com os cursos ordenados
+ * retorna o vetor com os cursos ordenados
  */
 vector<Curso*> Curso::ordenarCursos(vector<Curso*> cursos) {
     sort(cursos.begin(), cursos.end(),
@@ -88,6 +92,10 @@ vector<Curso*> Curso::ordenarCursos(vector<Curso*> cursos) {
              return (*a) < (*b);
          });
     return cursos;
+}
+
+string Curso::toString(bool gestor) {
+    return "Codigo: " + codigo + "\nNome: " + nome + "\nProfessor: " + (prof != NULL ? prof->getNome() : "") + "\n";
 }
 
 bool operator<(const Curso& a, const Curso& b) {

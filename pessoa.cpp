@@ -46,11 +46,11 @@ void Pessoa::setTel(string tel) {
     this->tel = tel;
 }
 
-string Pessoa::toString() const {
-    return "Nome: " + nome + "\nCPF: " + cpf + "\nTelefone: " + tel + "\n";
+string Pessoa::toString(bool gestor) const {
+    return "Nome: " + nome + "\n" + (gestor ? ("CPF: " + cpf + "\nTelefone: " + tel + "\n") : "");
 }
 
 std::ostream& operator<<(std::ostream& os, const Pessoa& p) {
-    os << p.toString();
+    os << p.toString(true);
     return os;
 }

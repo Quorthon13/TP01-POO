@@ -12,12 +12,15 @@ class Curso;
 
 class Aluno : public Pessoa {
    private:
+    string matricula;
     vector<Curso*> cursos;
 
    public:
     Aluno();
-    Aluno(vector<Curso*> cursos);
-
+    Aluno(string matricula, vector<Curso*> cursos);
     vector<Curso*> getCursos() const;
     void setCursos(vector<Curso*> cursos);
+    string getMatricula() const;
+    void setMatricula(string matricula);
+    void cadastrar();
 };
