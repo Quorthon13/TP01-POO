@@ -18,6 +18,8 @@ class Escola {
 
     bool cursosTemAlunos();
     void esvaziarSalas();
+    Curso* obterMaiorCurso();
+    Sala* obterMaiorSala();
 
    public:
     Escola();

@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-#define QUANT_DIAS 5
-
 Escola::Escola() : gestores(), alunos(), professores(), cursos(), salas() {
 }
 
@@ -21,12 +19,50 @@ bool Escola::cursosTemAlunos() {
 }
 
 /*
- * retorna true se pelo menos 1 curso possui aluno.
+ * limpa a agenda das salas
  */
 void Escola::esvaziarSalas() {
     for (Sala* sala : salas) {
         sala->getCursos().clear();
     }
+    for (Curso* curso : cursos) {
+        curso->setNumAulas(0);
+    }
+}
+
+/*
+ * retorna o curso com mais alunos que possui menos de MAX_AULAS
+ * caso NULL, não há mais cursos a serem distribuidos
+ */
+Curso* Escola::obterMaiorCurso() {
+    if (cursos.empty()) {
+        return NULL;
+    }
+    // cria uma copia dos cursos para ordenar
+    vector<Curso*> vetor(cursos);
+
+    while (!vetor.empty()) {
+        Curso* maior = vetor[0];
+        // caso tenha menos que MAX_AULAS, retorna maior curso
+        if (maior->getNumAulas() < MAX_AULAS) {
+            maior->incrementarAulas();
+            return maior;
+        }
+
+        // remove o curso invalido do vetor de copia
+        vetor = vector<Curso*>(vetor.begin() + 1, vetor.end());
+    }
+    return NULL;
+}
+
+Sala* Escola::obterMaiorSala() {
+    if (salas.empty()) {
+        return NULL;
+    }
+    // cria uma copia das salas para ordenar
+    vector<Curso*> vetor(cursos);
+
+    return NULL;
 }
 
 /*
@@ -41,6 +77,19 @@ bool Escola::distribuirSalas() {
     // se não há salas, não há como distribuir
     if (salas.empty()) {
         return false;
+    }
+
+    // limpa as salas para preparar para a distribuição
+    esvaziarSalas();
+
+    while (true) {
+        Curso* curso = obterMaiorCurso();
+        // caso NULL, não há mais cursos a serem distribuidos
+        if (curso == NULL) {
+            return true;
+        }
+
+        Sala* sala = obterMaiorSala();
     }
 
     return true;

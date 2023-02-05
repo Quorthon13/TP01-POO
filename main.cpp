@@ -11,8 +11,16 @@
 using namespace std;
 
 int main() {
-    Escola escola;
-    escola.cadastrarProfessor();
-    escola.cadastrarCurso();
+    Aluno a;
+    Curso c1, c2, c3;
+    c1.setCodigo("c1");
+    c2.setCodigo("c2");
+    c3.setCodigo("c3");
+    c2.setAlunos({&a, &a, &a});
+    c3.setAlunos({&a, &a});
+    c1.setAlunos({&a});
+    vector<Curso*> cursos = Curso::ordenarCursos({&c1, &c2, &c3});
+    for (Curso* c : cursos)
+        cout << c->getCodigo() << " ";
     return 0;
 }
