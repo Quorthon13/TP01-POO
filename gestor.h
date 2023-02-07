@@ -13,7 +13,8 @@ class Gestor : public Pessoa {
 
    public:
     Gestor();
-    Gestor(string login, string senha);
+    Gestor(string cpf, string nome, string tel, string usuario, string senha);
 
+    bool login(string usuario, string senha);
     void cadastrar();
 };

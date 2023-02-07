@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "aluno.h"
+#include "crud.h"
 #include "professor.h"
 
 using namespace std;
@@ -13,7 +14,7 @@ using namespace std;
 class Aluno;
 class Professor;
 
-class Curso {
+class Curso : public Crud {
    private:
     string codigo;
     string nome;
@@ -28,6 +29,8 @@ class Curso {
     void setProfessor(Professor* prof);
     string getCodigo() const;
     void setCodigo(string codigo);
+    string getNome() const;
+    void setNome(string nome);
     vector<Aluno*> getAlunos() const;
     void setAlunos(vector<Aluno*> alunos);
     int getNumAulas() const;
@@ -35,6 +38,11 @@ class Curso {
     int getNumAlunos();
 
     void cadastrar(vector<Professor*> professores);
+    void atualizar(Escola* e);
+    void excluir(Escola* e);
+    void consultar(Escola* e);
+    static Curso* listar(vector<Curso*> alunos);
+
     void incrementarAulas();
     static vector<Curso*> ordenarCursos(vector<Curso*> cursos);
     string toString(bool gestor);

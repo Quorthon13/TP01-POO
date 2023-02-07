@@ -7,9 +7,13 @@
 Gestor::Gestor() {
 }
 
-Gestor::Gestor(string usuario, string senha) {
+Gestor::Gestor(string cpf, string nome, string tel, string usuario, string senha) : Pessoa(cpf, nome, tel) {
     this->usuario = usuario;
     this->senha = senha;
+}
+
+bool Gestor::login(string usuario, string senha) {
+    return this->usuario == usuario && this->senha == senha;
 }
 
 void Gestor::cadastrar() {

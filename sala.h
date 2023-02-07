@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+#include "crud.h"
 #include "curso.h"
 
 // quantidade de dias de aula por semana
@@ -17,7 +18,7 @@
 using namespace std;
 class Curso;
 
-class Sala {
+class Sala : public Crud {
    private:
     vector<Curso*> cursos;
     int capacidade;
@@ -32,6 +33,7 @@ class Sala {
     void setCursos(vector<Curso*> cursos);
     bool isSalaLotada() const;
 
+    void cadastrar();
     static vector<Sala*> ordenarSalas(vector<Sala*> salas);
     void adicionarCurso(Curso* curso);
     static string obterDiaString(int dia);

@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <vector>
+
+#include "crud.h"
+
 Escola::Escola() : gestores(), alunos(), professores(), cursos(), salas() {
 }
 
@@ -23,7 +26,7 @@ bool Escola::cursosTemAlunos() {
  */
 void Escola::esvaziarSalas() {
     for (Sala* sala : salas) {
-        sala->getCursos().clear();
+        sala->setCursos({});
     }
     for (Curso* curso : cursos) {
         curso->setNumAulas(0);
@@ -99,6 +102,62 @@ void Escola::adicionarCursoEmSala(Curso* c, Sala* s) {
     s->adicionarCurso(c);
 }
 
+void Escola::gerenciarAluno() {
+    cout << endl
+         << "-----ALUNO-----" << endl;
+    int opcao = Crud::menuCrud();
+    switch (opcao) {
+        case CADASTRAR:
+            cadastrarAluno();
+            break;
+        case ATUALIZAR:
+            atualizarAluno();
+            break;
+        case EXCLUIR:
+            excluirAluno();
+            break;
+        case CONSULTAR:
+            consultarAluno();
+            break;
+    }
+}
+
+void Escola::gerenciarProfessor() {
+    int opcao = Crud::menuCrud();
+    switch (opcao) {
+        case CADASTRAR:
+            cadastrarProfessor();
+            break;
+        case ATUALIZAR:
+            atualizarProfessor();
+            break;
+        case EXCLUIR:
+            excluirProfessor();
+            break;
+        case CONSULTAR:
+            consultarProfessor();
+            break;
+    }
+}
+
+void Escola::gerenciarCurso() {
+    int opcao = Crud::menuCrud();
+    switch (opcao) {
+        case CADASTRAR:
+            cadastrarCurso();
+            break;
+        case ATUALIZAR:
+            atualizarCurso();
+            break;
+        case EXCLUIR:
+            excluirCurso();
+            break;
+        case CONSULTAR:
+            consultarCurso();
+            break;
+    }
+}
+
 /*
  * retorna false se não for possível distribuir todos os cursos durante a semana
  */
@@ -124,11 +183,9 @@ bool Escola::distribuirSalas() {
 
         Sala* sala = obterMaiorSala(curso);
         // caso NULL, não há salas disponíveis para alocacão
-
         if (sala == NULL) {
             return false;
         }
-
         // retorna false caso a maior sala não suporte o maior curso
         if (curso->getNumAlunos() > sala->getCapacidade()) {
             return false;
@@ -139,18 +196,24 @@ bool Escola::distribuirSalas() {
 }
 
 void Escola::cadastrarAluno() {
+    cout << "-----CADASTRO ALUNO-----"
+         << endl;
     Aluno* aluno = new Aluno;
     aluno->cadastrar();
     alunos.push_back(aluno);
 }
 
 void Escola::cadastrarProfessor() {
+    cout << "-----CADASTRO PROFESSOR-----"
+         << endl;
     Professor* prof = new Professor;
     prof->cadastrar();
     professores.push_back(prof);
 }
 
 void Escola::cadastrarCurso() {
+    cout << "-----CADASTRO CURSO-----"
+         << endl;
     Curso* curso = new Curso;
     curso->cadastrar(professores);
 
@@ -170,16 +233,222 @@ void Escola::cadastrarCurso() {
 }
 
 void Escola::cadastrarSala() {
-    salas.push_back(new Sala());
+    cout << "-----CADASTRO SALA-----"
+         << endl;
+
+    Sala* sala = new Sala();
+    sala->cadastrar();
+    salas.push_back(sala);
+    cout << "Sala " << salas.size() << " cadastrada.";
+
+    distribuirSalas();
+}
+
+void Escola::atualizarAluno() {
+    cout << "-----ATUALIZAR-----" << endl;
+    Aluno* a = Aluno::listar(alunos);
+    if (a == NULL)
+        return;
+
+    a->atualizar(this);
+    distribuirSalas();
+}
+
+void Escola::atualizarProfessor() {
+    cout << "-----ATUALIZAR-----" << endl;
+    Professor* p = Professor::listar(professores);
+    if (p == NULL)
+        return;
+
+    p->atualizar(this);
+}
+
+void Escola::atualizarCurso() {
+    cout << "-----ATUALIZAR-----" << endl;
+    Curso* c = Curso::listar(cursos);
+    if (c == NULL)
+        return;
+
+    c->atualizar(this);
+}
+
+void Escola::excluirAluno() {
+    cout << "-----EXCLUIR-----" << endl;
+
+    Aluno* a = Aluno::listar(alunos);
+    if (a == NULL)
+        return;
+
+    a->excluir(this);
+    delete a;
+}
+
+void Escola::excluirCurso() {
+    cout << "-----EXCLUIR-----" << endl;
+
+    Curso* c = Curso::listar(cursos);
+    if (c == NULL)
+        return;
+
+    c->excluir(this);
+    delete c;
+}
+
+void Escola::excluirProfessor() {
+    cout << "-----EXCLUIR-----" << endl;
+
+    Professor* p = Professor::listar(professores);
+    if (p == NULL)
+        return;
+
+    p->excluir(this);
+    delete p;
+}
+
+void Escola::consultarAluno() {
+    cout << "-----CONSULTAR-----" << endl;
+    Aluno* a = Aluno::listar(alunos);
+    if (a == NULL)
+        return;
+    a->consultar();
+}
+
+void Escola::consultarProfessor() {
+    cout << "-----CONSULTAR-----" << endl;
+    Professor* p = Professor::listar(professores);
+    if (p == NULL)
+        return;
+    p->consultar();
+}
+
+void Escola::consultarCurso() {
+    cout << "-----CONSULTAR-----" << endl;
+    Curso* c = Curso::listar(cursos);
+    if (c == NULL)
+        return;
+    c->consultar(this);
+}
+
+void Escola::gerenciar(int item) {
+    switch (item) {
+        case ALUNO:
+            gerenciarAluno();
+            break;
+        case PROFESSOR:
+            gerenciarProfessor();
+            break;
+        case CURSO:
+            gerenciarCurso();
+            break;
+        case SALA:
+            cadastrarSala();
+            break;
+        case RELATORIO:
+            menuRelatorioGestor();
+            break;
+    }
+}
+
+bool Escola::validarLoginGestor(string usuario, string senha) {
+    for (Gestor* g : gestores) {
+        if (g->login(usuario, senha)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void Escola::menuRelatorioGestor() {
+    while (true) {
+        int relatorio;
+        cout << "-----RELATORIOS-----\n1 - Aluno\n2 - Professor\n3 - Curso\n4 - Salas\n0 - Retornar\n\nEscolha um relatorio: ";
+        cin >> relatorio;
+
+        switch (relatorio) {
+            case 1:
+                emitirRelatorioAluno(true);
+                break;
+            case 2:
+                emitirRelatorioProfessor(true);
+                break;
+            case 3:
+                emitirRelatorioCurso(true);
+                break;
+            case 4:
+                emitirRelatorioSala(true);
+                break;
+            case SAIR:
+                return;
+        }
+        pause();
+    }
+    pause();
+}
+
+void Escola::menuRelatorioAluno() {
+    while (true) {
+        int relatorio;
+        cout << "-----RELATORIOS-----\n1 - Professor\n2 - Curso\n3 - Salas\n0 - Retornar\n\nEscolha um relatorio: ";
+        cin >> relatorio;
+
+        switch (relatorio) {
+            case 1:
+                emitirRelatorioProfessor(false);
+                break;
+            case 2:
+                emitirRelatorioCurso(false);
+                break;
+            case 3:
+                emitirRelatorioSala(false);
+                break;
+            case SAIR:
+                return;
+        }
+        pause();
+    }
+    pause();
+}
+
+void Escola::menuRelatorioProfessor() {
+    while (true) {
+        int relatorio;
+        cout << "-----RELATORIOS-----\n1 - Aluno\n2 - Professor\n3 - Curso\n4 - Salas\n0 - Retornar\n\nEscolha um relatorio: ";
+        cin >> relatorio;
+
+        switch (relatorio) {
+            case 1:
+                emitirRelatorioAluno(false);
+                break;
+            case 2:
+                emitirRelatorioProfessor(false);
+                break;
+            case 3:
+                emitirRelatorioCurso(false);
+                break;
+            case 4:
+                emitirRelatorioSala(false);
+                break;
+            case SAIR:
+                return;
+        }
+        pause();
+    }
+    pause();
 }
 
 void Escola::emitirRelatorioAluno(bool gestor) {
     for (Aluno* a : alunos) {
-        cout << a->toString(gestor) << "\nCursos: ";
+        cout << endl
+             << "------------------------------------\n"
+             << a->toString(gestor) << "Cursos: ";
 
         for (Curso* c : a->getCursos()) {
             cout << c->getCodigo() << " ";
         }
+
+        cout << endl
+             << "------------------------------------" << endl;
     }
 }
 
@@ -193,7 +462,8 @@ void Escola::emitirRelatorioProfessor(bool gestor) {
             cout << c->getCodigo() << " ";
         }
 
-        cout << "------------------------------------" << endl;
+        cout << endl
+             << "------------------------------------" << endl;
     }
 }
 
@@ -220,7 +490,8 @@ void Escola::emitirRelatorioSala(bool gestor) {
     for (Sala* sala : salas) {
         cout << endl
              << "------------------------------------\n"
-             << "Sala " << i << endl;
+             << "Sala " << i << endl
+             << "\nCapacidade: " << sala->getCapacidade() << endl;
         cout << "Cursos: ";
         for (Curso* c : sala->getCursos()) {
             cout << c->getCodigo() << " ";

@@ -1,9 +1,11 @@
 #pragma once
 
 #include <string>
-using namespace std;
 
-class Pessoa {
+#include "crud.h"
+
+using namespace std;
+class Pessoa : public Crud {
    private:
     string cpf;
     string nome;
@@ -11,9 +13,8 @@ class Pessoa {
 
    public:
     Pessoa();
+    virtual ~Pessoa();
     Pessoa(string cpf, string nome, string tel);
-
-    void cadastrar();
     string getCpf() const;
     void setCpf(int cpf);
     string getNome() const;
@@ -21,6 +22,9 @@ class Pessoa {
     string getTel() const;
     void setTel(string tel);
     string toString(bool gestor) const;
+
+    void cadastrar();
+    void atualizar();
 };
 
 std::ostream& operator<<(std::ostream& os, const Pessoa& p);

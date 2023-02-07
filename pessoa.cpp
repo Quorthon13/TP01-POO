@@ -7,6 +7,9 @@ using namespace std;
 Pessoa::Pessoa() {
 }
 
+Pessoa::~Pessoa() {
+}
+
 Pessoa::Pessoa(string cpf, string nome, string tel) {
     this->cpf = cpf;
     this->nome = nome;
@@ -15,11 +18,15 @@ Pessoa::Pessoa(string cpf, string nome, string tel) {
 
 void Pessoa::cadastrar() {
     cout << "Insira o CPF: ";
-    cin >> cpf;
+    getline(cin, cpf);
     cout << "Insira o nome: ";
-    cin >> nome;
+    getline(cin, nome);
     cout << "Insira o telefone: ";
-    cin >> tel;
+    getline(cin, tel);
+}
+
+void Pessoa::atualizar() {
+    cadastrar();
 }
 
 string Pessoa::getCpf() const {

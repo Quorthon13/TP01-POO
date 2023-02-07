@@ -1,6 +1,7 @@
 #include "sala.h"
 
 #include <algorithm>
+#include <iostream>
 #include <vector>
 
 #include "curso.h"
@@ -8,7 +9,7 @@ Sala::Sala() : cursos() {
     this->capacidade = 0;
 }
 
-Sala::Sala(int capacidade) {
+Sala::Sala(int capacidade) : cursos() {
     this->capacidade = capacidade;
 }
 
@@ -35,6 +36,11 @@ void Sala::setCursos(vector<Curso*> cursos) {
 // returna true se a sala está ocupada nos QUANT_DIAS da semana
 bool Sala::isSalaLotada() const {
     return getNumDias() >= QUANT_DIAS;
+}
+
+void Sala::cadastrar() {
+    cout << "Insira a capacidade da sala: ";
+    cin >> capacidade;
 }
 
 vector<Sala*> Sala::ordenarSalas(vector<Sala*> salas) {
