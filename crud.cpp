@@ -20,7 +20,7 @@ int Crud::menuCrud() {
 
         cin >> opcao;
     } while (opcao < 0 || opcao > 4);
-    pause();
+    if (opcao != 0) pause();
     return opcao;
 }
 

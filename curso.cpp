@@ -13,6 +13,7 @@ Curso::Curso() : alunos() {
 }
 
 Curso::Curso(string codigo, string nome) {
+    prof = NULL;
     this->nome = nome;
     this->codigo = codigo;
     numAulas = 0;
