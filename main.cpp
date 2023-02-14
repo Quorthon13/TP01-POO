@@ -1,3 +1,11 @@
+/*
+** Autores:
+* Diego Demétrio Santos Rodrigues - 20.2.4093
+* Bruna Cristina Goncalves - 20.2.4123
+* Jessica Giovana Zacarias - 20.2.4141
+* Moema Vieira de Moura - 18.2.4182
+*/
+
 #include <iostream>
 #include <string>
 #include <vector>
